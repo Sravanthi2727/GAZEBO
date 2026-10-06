@@ -1,0 +1,122 @@
+Task 3, 5, 6 — Ubuntu 24.04 + ROS 2 Jazzy + Gazebo Sim 8 (Harmonic)
+=====================================================================
+Your VM has Gazebo Sim 8.10 (ROS Jazzy). That is the correct simulator.
+There is no "Gazebo 18" package. Do not install Gazebo Classic 11.
+
+Open THREE terminals. In EVERY terminal run:
+
+  source /opt/ros/jazzy/setup.bash
+  cd ~/GAZEBO
+
+If the LiDAR cloud is missing or Gazebo is black, also run this in the Gazebo terminal:
+
+  export LIBGL_ALWAYS_SOFTWARE=1
+
+
+------------------------------------------------
+Terminal 1 — start Gazebo (pick ONE world)
+------------------------------------------------
+task 1: gz sim -r hospital_corridor.sdf
+
+Task 2:
+ gz sim -r warehouse_path.sdf
+Task 3 (mall, obstacles):
+  gz sim -r shopping_mall.sdf
+
+
+Task 4 : gz sim -r unknown_building.sdf
+
+Task 5 (maze / search-and-rescue):
+  gz sim -r bug_world.sdf
+
+Task 6 (hospital map + planning):
+  gz sim -r hospital_nav.sdf
+
+Wait until you see the robot and the walls. Click the play button only if you
+did not use -r.
+
+
+------------------------------------------------
+Terminal 2 — ROS <-> Gazebo bridge (same for 3, 5, 6)
+------------------------------------------------
+  ros2 run ros_gz_bridge parameter_bridge --ros-args -p config_file:=$HOME/GAZEBO/ros_gz_bridge.yaml
+
+Leave this running. Check with:
+
+  ros2 topic list
+  ros2 topic echo /robot/scan --once
+  ros2 topic echo /robot/odometry --once
+
+You must see LaserScan ranges (not a silent wait). If /robot/scan never prints,
+the Python node cannot avoid walls.
+
+
+------------------------------------------------
+Terminal 3 — navigation node
+------------------------------------------------
+task 1:
+   python3 go_to_goal.py
+task 2:
+    python3 follow_path.py
+
+Task 3:
+  python3 obstacle_avoidance.py
+
+Task 4:
+python3 wall_follower.py
+
+Task 5:
+  python3 bug_algorithm.py
+
+Task 6:
+  python3 hospital_nav.py
+
+Stop a node with Ctrl+C. Close Gazebo before opening a different world.
+
+
+------------------------------------------------
+What you should see
+------------------------------------------------
+Task 3: robot weaves around kiosk/people/bench and STOPS on the green exit pad.
+
+Task 5: robot uses Bug-2 (no preset turns) and STOPS on the green rescue pad.
+
+Task 6: A* uses the hospital map; LiDAR sees the red visitor (not on the map);
+        robot replans and STOPS on the green patient-room pad.
+
+When the node prints "Holding stop", it keeps sending zero speed so the robot
+does not roll past the pad. Leave that terminal open while you record, then Ctrl+C.
+
+
+------------------------------------------------
+Already-working tasks (1, 2, 4) — same 3-terminal pattern
+------------------------------------------------
+Task 1:  gz sim -r hospital_corridor.sdf     then python3 go_to_goal.py
+         (bridge still needed for /robot/cmd_vel and /robot/odometry)
+
+Task 2:  gz sim -r warehouse_path.sdf        then python3 follow_path.py
+
+Task 4:  gz sim -r unknown_building.sdf      then python3 wall_follower.py
+         (needs the scan bridge)
+
+
+------------------------------------------------
+If something fails
+------------------------------------------------
+1. "Waiting for odom + LiDAR"
+   Bridge not running, or you started Python before Gazebo finished loading.
+   Wait 5 seconds after Gazebo opens, restart the Python node.
+
+2. Robot does not move
+   ros2 topic echo /robot/cmd_vel
+   If that prints but the robot is still: Gazebo is paused (press play).
+
+3. LiDAR is empty in VirtualBox
+   Close Gazebo, then:
+     export LIBGL_ALWAYS_SOFTWARE=1
+     gz sim -r <world>.sdf
+   Worlds already use render_engine ogre (required on VirtualBox).
+
+4. Wrong Gazebo
+   Use:  gz sim -v 8 -r shopping_mall.sdf
+   ROS Jazzy is built against Gazebo Sim 8, not gz-sim10.
