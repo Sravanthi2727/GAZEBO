@@ -1,0 +1,18 @@
+# ROS 2 Jazzy <-> Gazebo Harmonic bridge configuration for Problem 1
+- ros_topic_name: "/problem1/cmd_vel"
+  gz_topic_name: "/problem1/cmd_vel"
+  ros_type_name: "geometry_msgs/msg/Twist"
+  gz_type_name: "gz.msgs.Twist"
+  direction: ROS_TO_GZ
+
+- ros_topic_name: "/problem1/odometry"
+  gz_topic_name: "/problem1/odometry"
+  ros_type_name: "nav_msgs/msg/Odometry"
+  gz_type_name: "gz.msgs.Odometry"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/problem1/scan"
+  gz_topic_name: "/problem1/scan"
+  ros_type_name: "sensor_msgs/msg/LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
+  direction: GZ_TO_ROS

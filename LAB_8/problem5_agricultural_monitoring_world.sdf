@@ -1,0 +1,210 @@
+<?xml version="1.0" ?>
+<sdf version="1.9">
+  <world name="problem5_agricultural_world">
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre</render_engine>
+    </plugin>
+
+    <scene>
+      <ambient>0.95 0.95 0.95 1</ambient>
+      <background>0.82 0.90 0.96 1</background>
+      <shadows>false</shadows>
+    </scene>
+    <light type="directional" name="sun">
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.3 0.3 0.3 1</specular>
+      <direction>-0.4 0.4 -1</direction>
+    </light>
+
+    <!-- Brown Soil Farm Field Ground Plane -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><plane><normal>0 0 1</normal><size>50 50</size></plane></geometry></collision>
+        <visual name="v">
+          <geometry><plane><normal>0 0 1</normal><size>50 50</size></plane></geometry>
+          <material><ambient>0.45 0.30 0.18 1</ambient><diffuse>0.45 0.30 0.18 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Boundary Fence Walls -->
+    <model name="fence_n"><static>true</static><pose>4.0 5.5 0.4 0 0 0</pose><link name="l"><visual name="v"><geometry><box><size>22.0 0.15 0.8</size></box></geometry><material><ambient>0.6 0.4 0.2 1</ambient></material></visual><collision name="c"><geometry><box><size>22.0 0.15 0.8</size></box></geometry></collision></link></model>
+    <model name="fence_s"><static>true</static><pose>4.0 -5.5 0.4 0 0 0</pose><link name="l"><visual name="v"><geometry><box><size>22.0 0.15 0.8</size></box></geometry><material><ambient>0.6 0.4 0.2 1</ambient></material></visual><collision name="c"><geometry><box><size>22.0 0.15 0.8</size></box></geometry></collision></link></model>
+    <model name="fence_e"><static>true</static><pose>15.0 0.0 0.4 0 0 0</pose><link name="l"><visual name="v"><geometry><box><size>0.15 11.2 0.8</size></box></geometry><material><ambient>0.6 0.4 0.2 1</ambient></material></visual><collision name="c"><geometry><box><size>0.15 11.2 0.8</size></box></geometry></collision></link></model>
+    <model name="fence_w"><static>true</static><pose>-7.0 0.0 0.4 0 0 0</pose><link name="l"><visual name="v"><geometry><box><size>0.15 11.2 0.8</size></box></geometry><material><ambient>0.6 0.4 0.2 1</ambient></material></visual><collision name="c"><geometry><box><size>0.15 11.2 0.8</size></box></geometry></collision></link></model>
+
+    <!-- Parallel Crop Rows (Dense Green Foliage Hedges) -->
+    <!-- Crop Row 1 (North hedge at y = +2.2) -->
+    <model name="crop_row_1">
+      <static>true</static><pose>4.0 2.2 0.5 0 0 0</pose>
+      <link name="l">
+        <visual name="v"><geometry><box><size>16.0 0.7 1.0</size></box></geometry>
+          <material><ambient>0.1 0.65 0.15 1</ambient><diffuse>0.1 0.65 0.15 1</diffuse></material>
+        </visual>
+        <collision name="c"><geometry><box><size>16.0 0.7 1.0</size></box></geometry></collision>
+      </link>
+    </model>
+
+    <!-- Crop Row 2 (Center hedge at y = 0.0) -->
+    <model name="crop_row_2">
+      <static>true</static><pose>4.0 0.0 0.5 0 0 0</pose>
+      <link name="l">
+        <visual name="v"><geometry><box><size>16.0 0.7 1.0</size></box></geometry>
+          <material><ambient>0.12 0.70 0.18 1</ambient><diffuse>0.12 0.70 0.18 1</diffuse></material>
+        </visual>
+        <collision name="c"><geometry><box><size>16.0 0.7 1.0</size></box></geometry></collision>
+      </link>
+    </model>
+
+    <!-- Crop Row 3 (South hedge at y = -2.2) -->
+    <model name="crop_row_3">
+      <static>true</static><pose>4.0 -2.2 0.5 0 0 0</pose>
+      <link name="l">
+        <visual name="v"><geometry><box><size>16.0 0.7 1.0</size></box></geometry>
+          <material><ambient>0.1 0.65 0.15 1</ambient><diffuse>0.1 0.65 0.15 1</diffuse></material>
+        </visual>
+        <collision name="c"><geometry><box><size>16.0 0.7 1.0</size></box></geometry></collision>
+      </link>
+    </model>
+
+    <!-- Crop Row 4 (Far South hedge at y = -4.4) -->
+    <model name="crop_row_4">
+      <static>true</static><pose>4.0 -4.4 0.5 0 0 0</pose>
+      <link name="l">
+        <visual name="v"><geometry><box><size>16.0 0.7 1.0</size></box></geometry>
+          <material><ambient>0.12 0.70 0.18 1</ambient><diffuse>0.12 0.70 0.18 1</diffuse></material>
+        </visual>
+        <collision name="c"><geometry><box><size>16.0 0.7 1.0</size></box></geometry></collision>
+      </link>
+    </model>
+
+    <!-- Designated Monitoring Inspection Points (Markers) -->
+    <!-- Monitoring Point 1: Row 1 West -->
+    <model name="monitor_point_1">
+      <static>true</static><pose>1.0 1.1 0.01 0 0 0</pose>
+      <link name="l">
+        <visual name="pad"><geometry><box><size>0.8 0.8 0.02</size></box></geometry><material><ambient>0.9 0.2 0.1 1</ambient></material></visual>
+        <visual name="pole"><pose>0 0.45 0.4 0 0 0</pose><geometry><cylinder><radius>0.06</radius><length>0.8</length></cylinder></geometry><material><ambient>0.9 0.2 0.1 1</ambient></material></visual>
+      </link>
+    </model>
+
+    <!-- Monitoring Point 2: Row 1 East -->
+    <model name="monitor_point_2">
+      <static>true</static><pose>8.0 1.1 0.01 0 0 0</pose>
+      <link name="l">
+        <visual name="pad"><geometry><box><size>0.8 0.8 0.02</size></box></geometry><material><ambient>0.1 0.4 0.9 1</ambient></material></visual>
+        <visual name="pole"><pose>0 0.45 0.4 0 0 0</pose><geometry><cylinder><radius>0.06</radius><length>0.8</length></cylinder></geometry><material><ambient>0.1 0.4 0.9 1</ambient></material></visual>
+      </link>
+    </model>
+
+    <!-- Monitoring Point 3: Row 2 East -->
+    <model name="monitor_point_3">
+      <static>true</static><pose>8.0 -1.1 0.01 0 0 0</pose>
+      <link name="l">
+        <visual name="pad"><geometry><box><size>0.8 0.8 0.02</size></box></geometry><material><ambient>0.9 0.8 0.1 1</ambient></material></visual>
+        <visual name="pole"><pose>0 -0.45 0.4 0 0 0</pose><geometry><cylinder><radius>0.06</radius><length>0.8</length></cylinder></geometry><material><ambient>0.9 0.8 0.1 1</ambient></material></visual>
+      </link>
+    </model>
+
+    <!-- Monitoring Point 4: Row 2 Mid -->
+    <model name="monitor_point_4">
+      <static>true</static><pose>3.0 -1.1 0.01 0 0 0</pose>
+      <link name="l">
+        <visual name="pad"><geometry><box><size>0.8 0.8 0.02</size></box></geometry><material><ambient>0.1 0.8 0.8 1</ambient></material></visual>
+        <visual name="pole"><pose>0 -0.45 0.4 0 0 0</pose><geometry><cylinder><radius>0.06</radius><length>0.8</length></cylinder></geometry><material><ambient>0.1 0.8 0.8 1</ambient></material></visual>
+      </link>
+    </model>
+
+    <!-- Monitoring Point 5: Row 2 West -->
+    <model name="monitor_point_5">
+      <static>true</static><pose>-2.0 -1.1 0.01 0 0 0</pose>
+      <link name="l">
+        <visual name="pad"><geometry><box><size>0.8 0.8 0.02</size></box></geometry><material><ambient>0.8 0.2 0.8 1</ambient></material></visual>
+        <visual name="pole"><pose>0 -0.45 0.4 0 0 0</pose><geometry><cylinder><radius>0.06</radius><length>0.8</length></cylinder></geometry><material><ambient>0.8 0.2 0.8 1</ambient></material></visual>
+      </link>
+    </model>
+
+    <!-- Agricultural Mobile Robot (High-Clearance Chassis + LiDAR + Camera) -->
+    <model name="agribot">
+      <pose>-3.5 1.1 0.25 0 0 0</pose>
+      <link name="chassis">
+        <inertial><mass>2.0</mass><inertia><ixx>0.06</ixx><iyy>0.12</iyy><izz>0.15</izz></inertia></inertial>
+        <collision name="c"><geometry><box><size>0.75 0.5 0.3</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.75 0.5 0.3</size></box></geometry>
+          <material><ambient>0.85 0.55 0.1 1</ambient><diffuse>0.85 0.55 0.1 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="left_wheel">
+        <pose>0 0.30 -0.05 0 0 0</pose><inertial><mass>0.3</mass><inertia><ixx>0.003</ixx><iyy>0.003</iyy><izz>0.003</izz></inertia></inertial>
+        <collision name="c"><pose>0 0 0 1.5708 0 0</pose><geometry><cylinder><radius>0.20</radius><length>0.08</length></cylinder></geometry><surface><friction><ode><mu>10</mu><mu2>10</mu2></ode></friction></surface></collision>
+        <visual name="v"><pose>0 0 0 1.5708 0 0</pose><geometry><cylinder><radius>0.20</radius><length>0.08</length></cylinder></geometry><material><ambient>0.1 0.1 0.1 1</ambient></material></visual>
+      </link>
+      <link name="right_wheel">
+        <pose>0 -0.30 -0.05 0 0 0</pose><inertial><mass>0.3</mass><inertia><ixx>0.003</ixx><iyy>0.003</iyy><izz>0.003</izz></inertia></inertial>
+        <collision name="c"><pose>0 0 0 1.5708 0 0</pose><geometry><cylinder><radius>0.20</radius><length>0.08</length></cylinder></geometry><surface><friction><ode><mu>10</mu><mu2>10</mu2></ode></friction></surface></collision>
+        <visual name="v"><pose>0 0 0 1.5708 0 0</pose><geometry><cylinder><radius>0.20</radius><length>0.08</length></cylinder></geometry><material><ambient>0.1 0.1 0.1 1</ambient></material></visual>
+      </link>
+      <link name="caster_f">
+        <pose>0.26 0 -0.12 0 0 0</pose><inertial><mass>0.05</mass><inertia><ixx>0.0001</ixx><iyy>0.0001</iyy><izz>0.0001</izz></inertia></inertial>
+        <collision name="c"><geometry><sphere><radius>0.08</radius></sphere></geometry><surface><friction><ode><mu>0.01</mu><mu2>0.01</mu2></ode></friction></surface></collision>
+        <visual name="v"><geometry><sphere><radius>0.08</radius></sphere></geometry><material><ambient>0.2 0.2 0.2 1</ambient></material></visual>
+      </link>
+      <link name="caster_r">
+        <pose>-0.26 0 -0.12 0 0 0</pose><inertial><mass>0.05</mass><inertia><ixx>0.0001</ixx><iyy>0.0001</iyy><izz>0.0001</izz></inertia></inertial>
+        <collision name="c"><geometry><sphere><radius>0.08</radius></sphere></geometry><surface><friction><ode><mu>0.01</mu><mu2>0.01</mu2></ode></friction></surface></collision>
+        <visual name="v"><geometry><sphere><radius>0.08</radius></sphere></geometry><material><ambient>0.2 0.2 0.2 1</ambient></material></visual>
+      </link>
+
+      <!-- Distance Sensor / LiDAR -->
+      <link name="lidar_link">
+        <pose>0.2 0 0.25 0 0 0</pose><inertial><mass>0.08</mass><inertia><ixx>0.0001</ixx><iyy>0.0001</iyy><izz>0.0001</izz></inertia></inertial>
+        <visual name="v"><geometry><cylinder><radius>0.08</radius><length>0.08</length></cylinder></geometry><material><ambient>0.9 0.1 0.1 1</ambient></material></visual>
+        <sensor name="lidar" type="gpu_lidar">
+          <always_on>true</always_on><visualize>true</visualize><update_rate>10</update_rate>
+          <topic>/agribot/scan</topic>
+          <lidar>
+            <scan><horizontal><samples>180</samples><resolution>1</resolution><min_angle>-2.35</min_angle><max_angle>2.35</max_angle></horizontal></scan>
+            <range><min>0.2</min><max>12.0</max><resolution>0.02</resolution></range>
+          </lidar>
+        </sensor>
+      </link>
+
+      <!-- Crop Inspection Camera -->
+      <link name="cam_link">
+        <pose>0.35 0 0.20 0 0.3 0</pose><inertial><mass>0.05</mass><inertia><ixx>0.0001</ixx><iyy>0.0001</iyy><izz>0.0001</izz></inertia></inertial>
+        <visual name="v"><geometry><box><size>0.08 0.1 0.06</size></box></geometry><material><ambient>0.1 0.1 0.1 1</ambient></material></visual>
+        <sensor name="crop_cam" type="camera">
+          <always_on>true</always_on><update_rate>10</update_rate><visualize>true</visualize>
+          <topic>/agribot/camera/image_raw</topic>
+          <camera>
+            <horizontal_fov>1.4</horizontal_fov>
+            <image><width>640</width><height>480</height><format>R8G8B8</format></image>
+            <clip><near>0.05</near><far>30.0</far></clip>
+          </camera>
+        </sensor>
+      </link>
+
+      <joint name="lwj" type="revolute"><parent>chassis</parent><child>left_wheel</child><axis><xyz>0 1 0</xyz></axis></joint>
+      <joint name="rwj" type="revolute"><parent>chassis</parent><child>right_wheel</child><axis><xyz>0 1 0</xyz></axis></joint>
+      <joint name="cfj" type="fixed"><parent>chassis</parent><child>caster_f</child></joint>
+      <joint name="crj" type="fixed"><parent>chassis</parent><child>caster_r</child></joint>
+      <joint name="lj" type="fixed"><parent>chassis</parent><child>lidar_link</child></joint>
+      <joint name="cj" type="fixed"><parent>chassis</parent><child>cam_link</child></joint>
+
+      <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+        <left_joint>lwj</left_joint><right_joint>rwj</right_joint>
+        <wheel_separation>0.60</wheel_separation><wheel_radius>0.20</wheel_radius>
+        <odom_topic>/agribot/odometry</odom_topic><topic>/agribot/cmd_vel</topic>
+      </plugin>
+    </model>
+  </world>
+</sdf>

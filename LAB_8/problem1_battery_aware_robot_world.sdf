@@ -1,0 +1,274 @@
+<?xml version="1.0" ?>
+<sdf version="1.9">
+  <world name="problem1_battery_world">
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre</render_engine>
+    </plugin>
+
+    <scene>
+      <ambient>0.9 0.9 0.9 1</ambient>
+      <background>0.85 0.90 0.95 1</background>
+      <shadows>false</shadows>
+    </scene>
+    <light type="directional" name="sun">
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.3 0.3 0.3 1</specular>
+      <direction>-0.5 0.5 -1</direction>
+    </light>
+
+    <!-- Ground Floor -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision"><geometry><plane><normal>0 0 1</normal><size>40 40</size></plane></geometry></collision>
+        <visual name="visual">
+          <geometry><plane><normal>0 0 1</normal><size>40 40</size></plane></geometry>
+          <material><ambient>0.88 0.88 0.88 1</ambient><diffuse>0.88 0.88 0.88 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Boundary Walls -->
+    <model name="wall_north">
+      <static>true</static><pose>0 7.0 0.6 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><box><size>16.2 0.25 1.2</size></box></geometry><material><ambient>0.7 0.75 0.8 1</ambient></material></visual>
+        <collision name="c"><geometry><box><size>16.2 0.25 1.2</size></box></geometry></collision>
+      </link>
+    </model>
+    <model name="wall_south">
+      <static>true</static><pose>0 -7.0 0.6 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><box><size>16.2 0.25 1.2</size></box></geometry><material><ambient>0.7 0.75 0.8 1</ambient></material></visual>
+        <collision name="c"><geometry><box><size>16.2 0.25 1.2</size></box></geometry></collision>
+      </link>
+    </model>
+    <model name="wall_east">
+      <static>true</static><pose>8.0 0 0.6 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><box><size>0.25 14.2 1.2</size></box></geometry><material><ambient>0.7 0.75 0.8 1</ambient></material></visual>
+        <collision name="c"><geometry><box><size>0.25 14.2 1.2</size></box></geometry></collision>
+      </link>
+    </model>
+    <model name="wall_west">
+      <static>true</static><pose>-8.0 0 0.6 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><box><size>0.25 14.2 1.2</size></box></geometry><material><ambient>0.7 0.75 0.8 1</ambient></material></visual>
+        <collision name="c"><geometry><box><size>0.25 14.2 1.2</size></box></geometry></collision>
+      </link>
+    </model>
+
+    <!-- Central Charging Station Dock -->
+    <model name="charging_dock_pad">
+      <static>true</static><pose>0.0 0.0 0.01 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><box><size>1.6 1.6 0.02</size></box></geometry>
+          <material><ambient>0.1 0.6 0.95 1</ambient><diffuse>0.1 0.6 0.95 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+    <model name="charging_dock_pylon">
+      <static>true</static><pose>0.0 1.0 0.75 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><box><size>0.8 0.3 1.5</size></box></geometry>
+          <material><ambient>0.2 0.3 0.4 1</ambient><diffuse>0.2 0.3 0.4 1</diffuse></material>
+        </visual>
+        <visual name="glow"><pose>0 -0.16 0.2 0 0 0</pose><geometry><box><size>0.5 0.05 0.2</size></box></geometry>
+          <material><ambient>0.0 0.9 1.0 1</ambient><diffuse>0.0 0.9 1.0 1</diffuse></material>
+        </visual>
+        <collision name="c"><geometry><box><size>0.8 0.3 1.5</size></box></geometry></collision>
+      </link>
+    </model>
+
+    <!-- Task Stations -->
+    <!-- Task Station 1: Inspection A -->
+    <model name="task_station_1">
+      <static>true</static><pose>4.5 3.5 0.01 0 0 0</pose>
+      <link name="link">
+        <visual name="pad"><geometry><box><size>1.2 1.2 0.02</size></box></geometry>
+          <material><ambient>0.95 0.8 0.1 1</ambient><diffuse>0.95 0.8 0.1 1</diffuse></material>
+        </visual>
+        <visual name="pillar"><pose>0 0.8 0.5 0 0 0</pose><geometry><cylinder><radius>0.15</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>0.95 0.8 0.1 1</ambient></material>
+        </visual>
+        <collision name="c"><pose>0 0.8 0.5 0 0 0</pose><geometry><cylinder><radius>0.15</radius><length>1.0</length></cylinder></geometry></collision>
+      </link>
+    </model>
+
+    <!-- Task Station 2: Assembly B -->
+    <model name="task_station_2">
+      <static>true</static><pose>5.0 -4.0 0.01 0 0 0</pose>
+      <link name="link">
+        <visual name="pad"><geometry><box><size>1.2 1.2 0.02</size></box></geometry>
+          <material><ambient>0.1 0.85 0.5 1</ambient><diffuse>0.1 0.85 0.5 1</diffuse></material>
+        </visual>
+        <visual name="pillar"><pose>0 -0.8 0.5 0 0 0</pose><geometry><cylinder><radius>0.15</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>0.1 0.85 0.5 1</ambient></material>
+        </visual>
+        <collision name="c"><pose>0 -0.8 0.5 0 0 0</pose><geometry><cylinder><radius>0.15</radius><length>1.0</length></cylinder></geometry></collision>
+      </link>
+    </model>
+
+    <!-- Task Station 3: Storage C -->
+    <model name="task_station_3">
+      <static>true</static><pose>-4.5 -3.5 0.01 0 0 0</pose>
+      <link name="link">
+        <visual name="pad"><geometry><box><size>1.2 1.2 0.02</size></box></geometry>
+          <material><ambient>0.85 0.2 0.85 1</ambient><diffuse>0.85 0.2 0.85 1</diffuse></material>
+        </visual>
+        <visual name="pillar"><pose>0 -0.8 0.5 0 0 0</pose><geometry><cylinder><radius>0.15</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>0.85 0.2 0.85 1</ambient></material>
+        </visual>
+        <collision name="c"><pose>0 -0.8 0.5 0 0 0</pose><geometry><cylinder><radius>0.15</radius><length>1.0</length></cylinder></geometry></collision>
+      </link>
+    </model>
+
+    <!-- Task Station 4: Quality D -->
+    <model name="task_station_4">
+      <static>true</static><pose>-4.0 4.0 0.01 0 0 0</pose>
+      <link name="link">
+        <visual name="pad"><geometry><box><size>1.2 1.2 0.02</size></box></geometry>
+          <material><ambient>0.95 0.45 0.1 1</ambient><diffuse>0.95 0.45 0.1 1</diffuse></material>
+        </visual>
+        <visual name="pillar"><pose>0 0.8 0.5 0 0 0</pose><geometry><cylinder><radius>0.15</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>0.95 0.45 0.1 1</ambient></material>
+        </visual>
+        <collision name="c"><pose>0 0.8 0.5 0 0 0</pose><geometry><cylinder><radius>0.15</radius><length>1.0</length></cylinder></geometry></collision>
+      </link>
+    </model>
+
+    <!-- Warehouse Interior Obstacles -->
+    <model name="crate_obs_1">
+      <static>true</static><pose>2.5 1.5 0.5 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><box><size>1.0 1.5 1.0</size></box></geometry><material><ambient>0.6 0.4 0.2 1</ambient></material></visual>
+        <collision name="c"><geometry><box><size>1.0 1.5 1.0</size></box></geometry></collision>
+      </link>
+    </model>
+    <model name="crate_obs_2">
+      <static>true</static><pose>2.5 -2.0 0.5 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><box><size>1.2 1.2 1.0</size></box></geometry><material><ambient>0.6 0.4 0.2 1</ambient></material></visual>
+        <collision name="c"><geometry><box><size>1.2 1.2 1.0</size></box></geometry></collision>
+      </link>
+    </model>
+    <model name="crate_obs_3">
+      <static>true</static><pose>-2.5 -1.5 0.5 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><box><size>1.2 1.5 1.0</size></box></geometry><material><ambient>0.6 0.4 0.2 1</ambient></material></visual>
+        <collision name="c"><geometry><box><size>1.2 1.5 1.0</size></box></geometry></collision>
+      </link>
+    </model>
+    <model name="crate_obs_4">
+      <static>true</static><pose>-2.5 2.0 0.5 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><box><size>1.0 1.2 1.0</size></box></geometry><material><ambient>0.6 0.4 0.2 1</ambient></material></visual>
+        <collision name="c"><geometry><box><size>1.0 1.2 1.0</size></box></geometry></collision>
+      </link>
+    </model>
+
+    <!-- Mobile Robot with Battery Monitoring and Sensors -->
+    <model name="battery_robot">
+      <pose>0.0 0.0 0.22 0 0 0</pose>
+      <link name="base_link">
+        <inertial><mass>1.2</mass><inertia><ixx>0.04</ixx><iyy>0.08</iyy><izz>0.10</izz></inertia></inertial>
+        <collision name="c"><geometry><box><size>0.7 0.5 0.25</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.7 0.5 0.25</size></box></geometry>
+          <material><ambient>0.15 0.55 0.85 1</ambient><diffuse>0.15 0.55 0.85 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="left_wheel">
+        <pose>0 0.30 -0.02 0 0 0</pose>
+        <inertial><mass>0.2</mass><inertia><ixx>0.003</ixx><iyy>0.003</iyy><izz>0.003</izz></inertia></inertial>
+        <collision name="c"><pose>0 0 0 1.5708 0 0</pose><geometry><cylinder><radius>0.18</radius><length>0.08</length></cylinder></geometry>
+          <surface><friction><ode><mu>10.0</mu><mu2>10.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="v"><pose>0 0 0 1.5708 0 0</pose><geometry><cylinder><radius>0.18</radius><length>0.08</length></cylinder></geometry>
+          <material><ambient>0.1 0.1 0.1 1</ambient></material>
+        </visual>
+      </link>
+
+      <link name="right_wheel">
+        <pose>0 -0.30 -0.02 0 0 0</pose>
+        <inertial><mass>0.2</mass><inertia><ixx>0.003</ixx><iyy>0.003</iyy><izz>0.003</izz></inertia></inertial>
+        <collision name="c"><pose>0 0 0 1.5708 0 0</pose><geometry><cylinder><radius>0.18</radius><length>0.08</length></cylinder></geometry>
+          <surface><friction><ode><mu>10.0</mu><mu2>10.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="v"><pose>0 0 0 1.5708 0 0</pose><geometry><cylinder><radius>0.18</radius><length>0.08</length></cylinder></geometry>
+          <material><ambient>0.1 0.1 0.1 1</ambient></material>
+        </visual>
+      </link>
+
+      <link name="caster_front">
+        <pose>0.25 0 -0.10 0 0 0</pose>
+        <inertial><mass>0.05</mass><inertia><ixx>0.0001</ixx><iyy>0.0001</iyy><izz>0.0001</izz></inertia></inertial>
+        <collision name="c"><geometry><sphere><radius>0.08</radius></sphere></geometry>
+          <surface><friction><ode><mu>0.01</mu><mu2>0.01</mu2></ode></friction></surface>
+        </collision>
+        <visual name="v"><geometry><sphere><radius>0.08</radius></sphere></geometry>
+          <material><ambient>0.2 0.2 0.2 1</ambient></material>
+        </visual>
+      </link>
+
+      <link name="caster_rear">
+        <pose>-0.25 0 -0.10 0 0 0</pose>
+        <inertial><mass>0.05</mass><inertia><ixx>0.0001</ixx><iyy>0.0001</iyy><izz>0.0001</izz></inertia></inertial>
+        <collision name="c"><geometry><sphere><radius>0.08</radius></sphere></geometry>
+          <surface><friction><ode><mu>0.01</mu><mu2>0.01</mu2></ode></friction></surface>
+        </collision>
+        <visual name="v"><geometry><sphere><radius>0.08</radius></sphere></geometry>
+          <material><ambient>0.2 0.2 0.2 1</ambient></material>
+        </visual>
+      </link>
+
+      <link name="lidar_link">
+        <pose>0.18 0 0.22 0 0 0</pose>
+        <inertial><mass>0.08</mass><inertia><ixx>0.0001</ixx><iyy>0.0001</iyy><izz>0.0001</izz></inertia></inertial>
+        <visual name="v"><geometry><cylinder><radius>0.09</radius><length>0.08</length></cylinder></geometry>
+          <material><ambient>0.9 0.2 0.2 1</ambient></material>
+        </visual>
+        <sensor name="lidar" type="gpu_lidar">
+          <always_on>true</always_on>
+          <visualize>true</visualize>
+          <update_rate>10</update_rate>
+          <topic>/problem1/scan</topic>
+          <lidar>
+            <scan>
+              <horizontal>
+                <samples>180</samples>
+                <resolution>1</resolution>
+                <min_angle>-3.14159</min_angle>
+                <max_angle>3.14159</max_angle>
+              </horizontal>
+            </scan>
+            <range><min>0.25</min><max>10.0</max><resolution>0.03</resolution></range>
+          </lidar>
+        </sensor>
+      </link>
+
+      <joint name="lwj" type="revolute"><parent>base_link</parent><child>left_wheel</child><axis><xyz>0 1 0</xyz></axis></joint>
+      <joint name="rwj" type="revolute"><parent>base_link</parent><child>right_wheel</child><axis><xyz>0 1 0</xyz></axis></joint>
+      <joint name="cfj" type="fixed"><parent>base_link</parent><child>caster_front</child></joint>
+      <joint name="crj" type="fixed"><parent>base_link</parent><child>caster_rear</child></joint>
+      <joint name="lj" type="fixed"><parent>base_link</parent><child>lidar_link</child></joint>
+
+      <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+        <left_joint>lwj</left_joint>
+        <right_joint>rwj</right_joint>
+        <wheel_separation>0.60</wheel_separation>
+        <wheel_radius>0.18</wheel_radius>
+        <odom_publish_frequency>30</odom_publish_frequency>
+        <odom_topic>/problem1/odometry</odom_topic>
+        <topic>/problem1/cmd_vel</topic>
+      </plugin>
+    </model>
+  </world>
+</sdf>
