@@ -570,15 +570,15 @@ Associated files:
 
 ```mermaid
 flowchart LR
-    A[Start: (0, 1.1) in Row 1] --> B[Station 1: (1.0, 1.1) -> Dwell 3s & Log]
-    B --> C[Bilateral LiDAR Row Centering: v=0.35m/s]
-    C --> D[Station 2: (8.0, 1.1) -> Dwell 3s & Log]
-    D --> E{x > 9.5m Reached?}
-    E -- Yes --> F[Headland 180° U-Turn -> Row 2 y=-1.1]
-    F --> G[Station 3: (8.0, -1.1) -> Dwell 3s & Log]
-    G --> H[Station 4: (3.0, -1.1) -> Dwell 3s & Log]
-    H --> I[Station 5: (-2.0, -1.1) -> Dwell 3s & Log]
-    I --> J[Mission Complete -> CSV Saved]
+    A["Start: (0, 1.1) in Row 1"] --> B["Station 1: (1.0, 1.1) -> Dwell 3s & Log"]
+    B --> C["Bilateral LiDAR Row Centering: v=0.35m/s"]
+    C --> D["Station 2: (8.0, 1.1) -> Dwell 3s & Log"]
+    D --> E{"x > 9.5m Reached?"}
+    E -- Yes --> F["Headland 180° U-Turn -> Row 2 y=-1.1"]
+    F --> G["Station 3: (8.0, -1.1) -> Dwell 3s & Log"]
+    G --> H["Station 4: (3.0, -1.1) -> Dwell 3s & Log"]
+    H --> I["Station 5: (-2.0, -1.1) -> Dwell 3s & Log"]
+    I --> J["Mission Complete -> CSV Saved"]
 ```
 
 ---
