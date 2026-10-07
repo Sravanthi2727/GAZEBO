@@ -451,20 +451,20 @@ Associated files:
 ```mermaid
 flowchart TD
     subgraph Perception["Perception Pipeline"]
-        Cam[RGB Camera Feed] --> ROI[Lower 45% ROI Extraction]
-        ROI --> HSV[HSV Conversion]
-        HSV --> YMask[Yellow Dash Mask: [15,70,70]-[40,255,255]]
-        HSV --> WMask[White Edge Mask: [0,0,180]-[180,50,255]]
-        YMask & WMask --> Comb[Bitwise OR & Moments Centroid Cx]
-        Comb --> Err[Lane Error: e_y = (Cx - W/2) / (W/2)]
+        Cam["RGB Camera Feed"] --> ROI["Lower 45% ROI Extraction"]
+        ROI --> HSV["HSV Conversion"]
+        HSV --> YMask["Yellow Dash Mask: [15,70,70]-[40,255,255]"]
+        HSV --> WMask["White Edge Mask: [0,0,180]-[180,50,255]"]
+        YMask & WMask --> Comb["Bitwise OR & Moments Centroid Cx"]
+        Comb --> Err["Lane Error: e_y = (Cx - W/2) / (W/2)"]
     end
 
     subgraph Control["Longitudinal & Lateral Control"]
-        Lidar[LiDAR Scan] --> RangeCheck{Min Front Obs?}
-        RangeCheck -- "< 0.85m" --> AEB[EMERGENCY BRAKE: v=0, w=0]
-        RangeCheck -- "0.85m - 1.40m" --> Swerve[Evasive Swerve: v=0.12, w=±0.75]
-        RangeCheck -- "1.40m - 3.20m" --> Decel[Smooth Deceleration + Lane PID]
-        RangeCheck -- "> 3.20m" --> Cruise[Nominal Cruise: v=0.42m/s + Lane PID]
+        Lidar["LiDAR Scan"] --> RangeCheck{"Min Front Obs?"}
+        RangeCheck -- "< 0.85m" --> AEB["EMERGENCY BRAKE: v=0, w=0"]
+        RangeCheck -- "0.85m - 1.40m" --> Swerve["Evasive Swerve: v=0.12, w=±0.75"]
+        RangeCheck -- "1.40m - 3.20m" --> Decel["Smooth Deceleration + Lane PID"]
+        RangeCheck -- "> 3.20m" --> Cruise["Nominal Cruise: v=0.42m/s + Lane PID"]
     end
 ```
 
